@@ -2,8 +2,7 @@ const jwt = require('jsonwebtoken');
 const logger = require('../utils/logger');
 
 const authenticateToken = (req, res, next) => {
-    const authHeader = req.headers['authorization'];
-    const token = authHeader && authHeader.split(' ')[1];
+    const token = req.cookies?.token;
 
     if (!token) {
         logger.warn('Access token missing');

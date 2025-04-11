@@ -7,6 +7,9 @@ const authenticateToken = require("../middleware/auth");
 
 router.post('/create-account', validateUser, userController.createAccount);
 router.post('/login', validateLogin, userController.login);
+router.post('/forgot-password', userController.forgotPassword);
+router.post('/reset-password', userController.resetPassword);
+router.post('/logout', authenticateToken, userController.logout);
 router.get('/get-user', authenticateToken, userController.getUser);
 
 module.exports = router;
