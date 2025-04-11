@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import Navbar from "../../components/Navbar/Navbar";
 import { Link, useNavigate } from "react-router-dom";
 import PasswordInput from "../../components/Input/PasswordInput";
 import { validateEmail } from "../../utils/helper";
 import axiosInstance from "../../utils/axiosInstance";
+import useUserStore from "../../stores/useUserStore";
+
 
 const Login = () => {
 
@@ -11,6 +13,8 @@ const Login = () => {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [error, setError] = useState(null)
+    const { setUser } = useUserStore();
+
 
     const navigate = useNavigate()
 
@@ -32,22 +36,22 @@ const Login = () => {
 
         try {
             const response = await axiosInstance.post("/api/users/login", {
-                email: email,
-                password: password
-            })
+                email,
+                password
+            });
 
-            if (response.data && response.data.accessToken) {
-                localStorage.setItem("token", response.data.accessToken)
-                navigate("/dashboard")
+            if (response.data?.user) {
+                setUser(response.data.user);
+                navigate("/dashboard");
             }
-        }
-        catch (err) {
-            if (err.response && err.response.data && err.response.data.message) {
-                setError(err.response.data.message)
+        } catch (err) {
+            if (err.response?.data?.message) {
+                setError(err.response.data.message);
             } else {
-                setError("An unexpected error occured.")
+                setError("An unexpected error occurred.");
             }
         }
+
     }
 
 
@@ -74,6 +78,15 @@ const Login = () => {
                                 Create an Account
                             </Link>
                         </p>
+                        <div className="mt-4 text-sm text-center">
+
+                            <Link
+                                className="font-medium text-primary underline"
+                                to="/forgot-password"
+                            >
+                                Forgot-password?
+                            </Link>
+                        </div>
                     </form>
                 </div>
             </div>

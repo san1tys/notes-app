@@ -1,9 +1,11 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import Navbar from '../../components/Navbar/Navbar'
 import PasswordInput from '../../components/Input/PasswordInput'
 import { Link, useNavigate } from 'react-router-dom'
 import axiosInstance from '../../utils/axiosInstance'
 import { validateEmail } from '../../utils/helper'
+import useUserStore from '../../stores/useUserStore';
+
 
 const SignUp = () => {
 
@@ -11,57 +13,46 @@ const SignUp = () => {
     const [name, setName] = useState("")
     const [password, setPassword] = useState("")
     const [error, setError] = useState(null)
+    const { setUser } = useUserStore();
+
 
     const navigate = useNavigate()
 
     const handleSignUp = async (e) => {
-        e.preventDefault()
+        e.preventDefault();
 
-        if (!name) {
-            setError("Please enter your name.")
-            return
-        }
+        if (!name) return setError("Please enter your name.");
+        if (!validateEmail(email)) return setError("Please enter a valid email address.");
+        if (!password) return setError("Please enter a password.");
 
-        if (!validateEmail(email)) {
-            setError("Please enter a valid email address.")
-            return
-        }
-
-        if (!password) {
-            setError("Please enter a password.")
-            return
-        }
-
-
-        setError("")
+        setError("");
 
         try {
             const response = await axiosInstance.post("/api/users/create-account", {
                 fullname: name,
-                email: email,
-                password: password
-            })
+                email,
+                password
+            });
 
-            if (response.data && response.data.error) {
+            if (response.data?.error) {
                 setError(response.data.message || "An error occurred.");
                 return;
             }
 
-            if (response.data && response.data.accessToken) {
-                localStorage.setItem("token", response.data.accessToken)
-                console.log(response.data)
-                navigate("/dashboard")
+            if (response.data?.user) {
+                setUser(response.data.user);
+                navigate("/dashboard");
             }
-        }
-        catch (err) {
-            if (err.response && err.response.data && err.response.data.errors) {
-                const errorMessage = err.response.data.errors[0].msg;
-                setError(errorMessage);
+
+        } catch (err) {
+            if (err.response?.data?.errors) {
+                setError(err.response.data.errors[0].msg);
             } else {
                 setError("An unexpected error occurred.");
             }
         }
-    }
+    };
+
 
     return (
         <>

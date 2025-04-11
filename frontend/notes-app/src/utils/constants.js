@@ -1,1 +1,1 @@
-export const BASE_URL = "https://notes-app-jl4g.onrender.com"
+export const BASE_URL = "http://localhost:8000";
