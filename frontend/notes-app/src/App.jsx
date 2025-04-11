@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-d
 import Home from './pages/Home/Home';
 import Login from './pages/Login/Login';
 import SignUp from './pages/SignUp/SignUp';
-import NotFound from './pages/NotFound/Notfound';
+import NotFound from './pages/NotFound/NotFound'
 import ForgotPasswordScreen from './pages/ForgotPasswordScreen/ForgotPasswordScreen';
 import ResetPasswordScreen from './pages/ResetPasswordScreen/ResetPasswordScreen';
 
