@@ -7,9 +7,6 @@ const useNotesStore = create((set, get) => ({
     isSearch: false,
 
     getAllNotes: async () => {
-        const user = useUserStore.getState().user;
-        if (!user) return;
-
         try {
             const res = await axiosInstance.get('/api/notes/get-all-notes');
             if (res.data && res.data.notes) {
@@ -19,7 +16,6 @@ const useNotesStore = create((set, get) => ({
             console.error(err);
         }
     },
-
 
     searchNotes: async (query) => {
         try {
