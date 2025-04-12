@@ -39,9 +39,13 @@ const Home = () => {
     } = useModalStore();
 
     useEffect(() => {
-        getAllNotes();
-        getUserInfo(navigate);
+        const init = async () => {
+            await getUserInfo(navigate);
+            await getAllNotes();
+        };
+        init();
     }, []);
+
 
     const handleAddClick = () => {
         setSelectedNote(null);
