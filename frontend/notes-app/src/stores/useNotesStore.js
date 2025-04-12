@@ -71,6 +71,7 @@ const useNotesStore = create((set, get) => ({
             const res = await axiosInstance.get('/api/users/get-user');
             if (res.data && res.data.user) {
                 useUserStore.getState().setUser(res.data.user);
+                get().getAllNotes();
             }
         } catch (err) {
             if (err.response?.status === 401) {
