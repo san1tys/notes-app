@@ -1,22 +1,29 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Navbar from "../../components/Navbar/Navbar";
 import { Link, useNavigate } from "react-router-dom";
 import PasswordInput from "../../components/Input/PasswordInput";
 import { validateEmail } from "../../utils/helper";
-import axiosInstance from "../../utils/axiosInstance";
+import axiosPublic from "../../utils/axiosPublic";
 import useUserStore from "../../stores/useUserStore";
 
 
 const Login = () => {
 
+    const navigate = useNavigate()
 
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [error, setError] = useState(null)
-    const { setUser } = useUserStore();
+    const { setUser, isAuthenticated } = useUserStore();
 
 
-    const navigate = useNavigate()
+    useEffect(() => {
+        if (isAuthenticated) {
+            navigate("/dashboard");
+        }
+    }, [isAuthenticated]);
+
+
 
     const handleLogin = async (e) => {
         e.preventDefault()
@@ -35,10 +42,11 @@ const Login = () => {
         setError("")
 
         try {
-            const response = await axiosInstance.post("/api/users/login", {
+            const response = await axiosPublic.post("/api/users/login", {
                 email,
-                password
+                password,
             });
+
 
             if (response.data?.user) {
                 setUser(response.data.user);

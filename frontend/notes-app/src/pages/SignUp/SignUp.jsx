@@ -2,7 +2,7 @@ import { useState } from 'react'
 import Navbar from '../../components/Navbar/Navbar'
 import PasswordInput from '../../components/Input/PasswordInput'
 import { Link, useNavigate } from 'react-router-dom'
-import axiosInstance from '../../utils/axiosInstance'
+import axiosPublic from "../../utils/axiosPublic";
 import { validateEmail } from '../../utils/helper'
 import useUserStore from '../../stores/useUserStore';
 
@@ -28,7 +28,7 @@ const SignUp = () => {
         setError("");
 
         try {
-            const response = await axiosInstance.post("/api/users/create-account", {
+            const response = await axiosPublic.post("/api/users/create-account", {
                 fullname: name,
                 email,
                 password

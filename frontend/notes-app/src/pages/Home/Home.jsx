@@ -12,7 +12,6 @@ import NoDataImage from '../../assets/images/no-data-icon.svg';
 
 import useNotesStore from '../../stores/useNotesStore';
 import useModalStore from '../../stores/useModalStore';
-import useUserStore from '../../stores/useUserStore';
 
 Modal.setAppElement('#root');
 
